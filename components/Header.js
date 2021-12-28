@@ -6,12 +6,30 @@ import {
   UserCircleIcon,
   UsersIcon,
 } from "@heroicons/react/outline";
+import { useState, useEffect } from "react";
 
 const Header = () => {
+  const [navbar, setNavbar] = useState(false);
+
+  useEffect(() => {
+    window.addEventListener("scroll", changeBackground);
+  }, []);
+
+  const changeBackground = () => {
+    if (window.scrollY > 50 && window.scrollY < 500) {
+      setNavbar(true);
+    } else {
+      setNavbar(false);
+    }
+  };
+
   return (
     <header
-      className="sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5
-    md:px-10"
+      className={
+        navbar
+          ? "sticky top-0 z-50 grid grid-cols-3 bg-transparent shadow-md py-5 px-5 md:px-10"
+          : "sticky top-0 z-50 grid grid-cols-3 bg-white shadow-md py-5 px-5 md:px-10"
+      }
     >
       {/* // left */}
       <div className="relative flex items-center h-10 cursor-pointer my-auto">
