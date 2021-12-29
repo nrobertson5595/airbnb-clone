@@ -7,13 +7,30 @@ import {
   UsersIcon,
 } from "@heroicons/react/outline";
 import { useState, useEffect } from "react";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRangePicker } from "react-date-range";
 
 const Header = () => {
   const [navbar, setNavbar] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
 
   useEffect(() => {
     window.addEventListener("scroll", changeBackground);
   }, []);
+
+  const SelectionRange = {
+    startDate: startDate,
+    endDate: endDate,
+    key: "Selection",
+  };
+
+  const handleSelect = (ranges) => {
+    setStartDate(ranges.Selection.startDate);
+    setEndDate(ranges.Selection.endDate);
+  };
 
   const changeBackground = () => {
     if (window.scrollY > 50 && window.scrollY < 500) {
@@ -43,6 +60,8 @@ const Header = () => {
       {/* // Middle  */}
       <div className="flex items-center  md:border-2 rounded-full py-2 md:shadow-sm">
         <input
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
           className="flex-grow pl-5 bg-transparent outline-none text-sm text-gray-600 placeholder-gray-400"
           placeholder="start your search"
         />
@@ -58,6 +77,19 @@ const Header = () => {
           <UserCircleIcon className="h-6" />
         </div>
       </div>
+      {searchInput && (
+        <div className="flex flex-col col-span-3 mx-auto">
+          <DateRangePicker
+            ranges={[SelectionRange]}
+            minDate={new Date()}
+            rangeColors={["#FD5B61"]}
+            onChange={handleSelect}
+          />
+          <div>
+            <h2 className="text-2xl">Number of Guest</h2>
+          </div>
+        </div>
+      )}
     </header>
   );
 };
